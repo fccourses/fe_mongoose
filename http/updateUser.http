@@ -1,0 +1,6 @@
+PATCH http://localhost:3000/607f13bad913b44789209800
+Content-Type: application/json
+
+{
+   "email": "uniqueMail@mail.com"
+}

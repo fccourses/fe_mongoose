@@ -55,6 +55,7 @@ const User = mongoose.model('users', userSchema)
 const app = express()
 
 app.use(express.json())
+
 app.post('/', async (req, res, next) => {
     try {
         const {body} = req
@@ -64,11 +65,34 @@ app.post('/', async (req, res, next) => {
         next(e)
     }
 })
+
 app.get('/', async (req, res, next) => {
     const users = await User.find()
     res.send(users)
 })
 
+app.patch('/:userId', async (req, res, next) => {
+    try {
+        const {body, params: {userId}} = req
+        const updatedUser = await User.findOneAndUpdate({_id: userId}, body, {new: true})
+        res.send(updatedUser)
+    } catch (err) {
+        next(err)
+    }
+})
+
+app.delete('/:userId', async (req, res, next) => {
+    try {
+        const {params: {userId}} = req
+        const deletedUser = await User.findByIdAndRemove(userId)
+        if (deletedUser) {
+            return res.send(deletedUser)
+        }
+        res.sendStatus(404)
+    } catch (err) {
+        next(err)
+    }
+})
 
 const server = http.createServer(app)
 
