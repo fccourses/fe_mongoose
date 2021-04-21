@@ -1,0 +1,6 @@
+POST http://localhost:3000/607f139bd913b447892097ff/posts
+Content-Type: application/json
+
+{
+"body": "my post 12"
+}

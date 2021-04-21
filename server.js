@@ -48,9 +48,22 @@ const userSchema = new Schema({
         type: Date,
         required: true,
     },
+}, {
+    versionKey: false,
+    timestamps: true,
+})
+
+const postSchema = new Schema({
+    body: String,
+    imgSrc: String,
+    author: {type: Schema.Types.ObjectId, ref: 'users'},
+}, {
+    versionKey: false,
+    timestamps: true,
 })
 
 const User = mongoose.model('users', userSchema)
+const Post = mongoose.model('posts', postSchema)
 
 const app = express()
 
@@ -89,6 +102,33 @@ app.delete('/:userId', async (req, res, next) => {
             return res.send(deletedUser)
         }
         res.sendStatus(404)
+    } catch (err) {
+        next(err)
+    }
+})
+
+app.post('/:userId/posts', async (req, res, next) => {
+    try {
+        const {params: {userId}, body} = req
+        const createdPost = await Post.create({...body, author: userId})
+        res.send(createdPost)
+    } catch (err) {
+        next(err)
+    }
+})
+
+app.get('/posts', async (req, res, next) => {
+    try {
+        const {params: {userId}} = req
+        Post.find()
+            .populate('author')
+            .exec((err, posts) => {
+                if (err) {
+                    throw err
+                }
+                res.send(posts)
+            })
+
     } catch (err) {
         next(err)
     }
