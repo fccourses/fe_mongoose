@@ -1,0 +1,6 @@
+http/
+/node_modules/
+.idea/
+.vscode/
+.git/
+.gitignore
