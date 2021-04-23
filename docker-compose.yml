@@ -1,0 +1,27 @@
+version: '3.8'
+services: 
+  backend-app:
+    build:
+      context: ./
+    ports: 
+      - 3005:3000
+    environment: 
+      PORT: 3000
+    networks: 
+      - undefined
+    volumes: 
+      - ./:/server:ro
+    depends_on:
+      - fe_mongo
+
+  fe_mongo:
+    image: mongo
+    restart: always
+    networks: 
+      - undefined
+    volumes: 
+      - /home/user/Documents/mongo_backup_fe:/data/db
+
+networks: 
+  undefined:
+    name: undef

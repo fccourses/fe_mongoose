@@ -16,7 +16,7 @@ const emailValidationSchema = yup
   .email()
   .required()
 
-const hostName = '172.17.0.2'
+const hostName = 'fe_mongo'
 
 mongoose
   .connect(`mongodb://${hostName}:27017/${DB_NAME}`, {
